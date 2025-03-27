@@ -1,65 +1,62 @@
-#include <WiFi.h>  // Use <ESP8266WiFi.h> for ESP8266
-#include <SinricPro.h>
-#include <SinricProSwitch.h>
+To create a home automation system that controls multiple devices (LEDs) remotely using ESP32/ESP8266, Sinric Pro, and Google Assistant.
 
-#define WIFI_SSID     "your_wifi_ssid"
-#define WIFI_PASS     "your_wifi_password"
-#define APP_KEY       "your_app_key"
-#define APP_SECRET    "your_app_secret"
+ Components Required:
+ESP32 / ESP8266
 
-#define DEVICE_ID_1   "your_device_id_1"  // Device ID for LED1
-#define DEVICE_ID_2   "your_device_id_2"  // Device ID for LED2
-#define DEVICE_ID_3   "your_device_id_3"  // Device ID for LED3
+LEDs (3x)
 
-#define LED1_PIN 2   // GPIO2 (D2) - LED 1
-#define LED2_PIN 4   // GPIO4 (D4) - LED 2
-#define LED3_PIN 5   // GPIO5 (D5) - LED 3
+220Ω Resistors (3x)
 
-bool onPowerState(String deviceId, bool state) {
-    Serial.print("Device ");
-    Serial.print(deviceId);
-    Serial.print(" turned ");
-    Serial.println(state ? "ON" : "OFF");
+Breadboard & Jumper Wires
 
-    if (deviceId == DEVICE_ID_1) {
-        digitalWrite(LED1_PIN, state ? HIGH : LOW);  // Control LED1
-    } 
-    else if (deviceId == DEVICE_ID_2) {
-        digitalWrite(LED2_PIN, state ? HIGH : LOW);  // Control LED2
-    }
-    else if (deviceId == DEVICE_ID_3) {
-        digitalWrite(LED3_PIN, state ? HIGH : LOW);  // Control LED3
-    }
+Wi-Fi Connection
 
-    return true;
-}
+Sinric Pro Account
 
-void setup() {
-    Serial.begin(115200);
-    pinMode(LED1_PIN, OUTPUT);
-    pinMode(LED2_PIN, OUTPUT);
-    pinMode(LED3_PIN, OUTPUT);
-    WiFi.begin(WIFI_SSID, WIFI_PASS);
+Google Home App
 
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Connecting to WiFi...");
-    }
-    Serial.println("Connected to WiFi");
+Circuit Diagram:
+LED1 → GPIO 2
 
-    // Create Sinric Pro devices
-    SinricProSwitch &mySwitch1 = SinricPro[DEVICE_ID_1];
-    mySwitch1.onPowerState(onPowerState);
+LED2 → GPIO 4
 
-    SinricProSwitch &mySwitch2 = SinricPro[DEVICE_ID_2];
-    mySwitch2.onPowerState(onPowerState);
+LED3 → GPIO 5
 
-    SinricProSwitch &mySwitch3 = SinricPro[DEVICE_ID_3];
-    mySwitch3.onPowerState(onPowerState);
+Cathodes → GND through 220Ω resistors
 
-    SinricPro.begin(APP_KEY, APP_SECRET);
-}
+Procedure:
+Create a Sinric Pro Account:
 
-void loop() {
-    SinricPro.handle();
-}
+Add three devices (LED1, LED2, LED3) and copy their Device IDs.
+
+Connect ESP32/ESP8266 to LEDs as per the circuit diagram.
+
+Upload the Code:
+
+Enter Wi-Fi credentials, Sinric Pro App Key, App Secret, and Device IDs.
+
+Test with Sinric Pro App:
+
+Control the LEDs manually.
+
+Connect to Google Assistant:
+
+Open Google Home App → Set up device → Sinric Pro → Log in.
+
+Use Voice Commands:
+
+"Hey Google, turn ON LED1"
+
+"Hey Google, turn OFF LED2"
+
+"Hey Google, turn ON all LEDs"
+
+ Observations:
+LEDs respond accurately to voice commands.
+
+Devices can be controlled remotely via the Sinric Pro App.
+
+The system works smoothly over the internet.
+
+ Conclusion:
+The home automation system was successfully implemented, allowing remote control of multiple devices using Google Assistant and Sinric Pro.
